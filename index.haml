@@ -1,32 +1,27 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Campaign Finance in Oakland</title>
-    <meta content='width=800, user-scalable=0' name='viewport'>
-    <meta charset='UTF-8'>
-    <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
-    <meta content='utf-8' http-equiv='encoding'>
-    <script charset='utf-8' src='js/d3.js'></script>
-    <script src='js/fisheye.js'></script>
-    <script src='js/jquery.js'></script>
-    <link href='style.css' rel='stylesheet' type='text/css'>
-  </head>
-  <body>
-    <div id='title'>Contributors to Campaigns</div>
-    <div id='controls'>
-      <p>
+!!!
+%html
+  %head
+    %title Campaign Finance in Oakland
+    %meta{ name: 'viewport', content: 'width=800, user-scalable=0' }
+    %meta{ charset: 'UTF-8' }
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}
+    %meta{:content => "utf-8", "http-equiv" => "encoding"}/
+    %script{ src: 'js/d3.js', charset: 'utf-8' }
+    %script{ src: 'js/fisheye.js' }
+    %script{ src: 'js/jquery.js' }
+    %link{ rel: 'stylesheet', type: 'text/css', href: 'style.css' }
+  %body
+    #title Contributors to Campaigns
+    #controls
+      %p
         color by:
-        <select class='color'>
-          <option value='corporation'>Corporation / Individual</option>
-          <option value='oakland'>Oakland / Non-Oakland</option>
-        </select>
+        %select.color
+          %option{ value: 'corporation' } Corporation / Individual
+          %option{ value: 'oakland' } Oakland / Non-Oakland
         sort by:
-        <select class='sort-by'>
-          <option value='amount'>Amount $$$$$$$</option>
-        </select>
-      </p>
-    </div>
-    <script>
+        %select.sort-by
+          %option{ value: 'amount' } Amount $$$$$$$
+    :javascript
       var width = window.innerWidth, height = window.innerHeight
         , vis = d3.select('body').append('svg').attr('class', 'vis')
           .style({ width: width + 'px', height: height + 'px' })
@@ -268,6 +263,3 @@
         topNode = d3.select(maxNode).classed('active', true)
         topNode.call(posTooltip)
       }
-    </script>
-  </body>
-</html>

@@ -1,0 +1,88 @@
+body{ margin: 0; font-family: helvetica; }
+button, select { outline: none;}
+.node { fill: black; }
+#controls{ 
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+#source{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+#title{
+  width: 100%;
+}
+.vis{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -10;
+}
+#title h1{
+  text-align: center;
+  margin: 10px;
+}
+circle { stroke: none; }
+.node.active circle {
+  stroke-width: 1;
+  stroke: white;
+}
+.node.highlighted circle { 
+  stroke: black;
+  stroke-width: 15;
+  stroke-opacity: 0.5;
+}
+.tooltip{ display: none; }
+.tooltip .bg{ opacity: 0.7; }
+.tooltip text{
+  fill: white;
+}
+active.tooltip{
+  display: inherit;
+}
+.node text{
+  text-anchor: middle;
+  fill: black;
+}
+select{ font-size: 20px; }
+.sort-by{
+/*        border: 1px solid #999;
+  background-color: green;
+  -webkit-appearance: none;
+  padding: 5px;
+  border-radius: 0px;*/
+}
+.share-left{ margin-top: 20px; position: absolute; left: 20px;}
+.share-right{ margin-top: 20px; position: absolute; right: 10px;}
+.fb-share-right{ margin-top: 50px; position: absolute; right: 35px;}
+@media (max-width: 900px) {
+  h1, #controls{ 
+    float: left;
+    margin-left: 20px;
+  }
+  .share-left{
+    left: inherit;
+    right: 20px;
+    top: 60px;
+  }
+}
+@media(max-width: 400px){
+  .share-left, .share-right, .fb-share-right{
+    display: none;
+  }
+  h1{
+    display: none;
+  }
+  #controls{
+    font-size: 10px;
+    position: absolute;
+    top: inherit;
+    bottom: 5px;
+  }
+  #controls select{ width: 100px;}
+  #source{
+    display: none;
+  }
+}
