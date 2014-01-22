@@ -12,7 +12,6 @@
     <link href='style.css' rel='stylesheet' type='text/css'>
   </head>
   <body>
-    <div id='title'>Contributors to Campaigns</div>
     <div id='controls'>
       <p>
         color by:
@@ -34,7 +33,7 @@
           .style({ width: width + 'px', height: height + 'px' })
         , node, max, margin = 30, max_area = 300, tooltip
         , margin_top = (width > 450) ? 120 : 20
-        , margin_bottom = 50, steps_x = 100, steps_y = 28
+        , margin_bottom = 50, steps_x = 50, steps_y = 10
         , color = d3.scale.category20()
         , calcBestArea = function(){
           var r1 = (width / steps_x) / 1.3
@@ -72,20 +71,23 @@
         // we're in an iframe! oh on! hide the twitter follow button
         $('.share-left').hide()
       }
-      d3.csv('data2.csv', format, function(err, rows){
+      d3.csv('data.csv', format, function(err, rows){
         if(err) throw err
-        employees = rows
-        gotEmployees(employees)
+        contributions = rows;
+        gotContributions(filterContributions(contributions, 5000))
         fisheyeEffect(vis)
       })
+      function filterContributions(contributions, limit) {
+        return contributions.sort(sortBy(sortMetric)).slice(0, limit);
+      }
       function updateAreaScale(sortMetric){
         // var metric = sortMetric
         // if(metric === 'Title' || metric === 'Union') metric = 'TCOE'
-        areaScale.domain([0, d3.max(employees, function(d){ return d['Tran_Amt1'] })])
+        areaScale.domain([0, d3.max(contributions, function(d){ return d[sortMetric] })])
       }
-      function gotEmployees(employees){
+      function gotContributions(contributions){
         updateAreaScale(sortMetric)
-        node = vis.selectAll('.node').data(employees, dataKey)
+        node = vis.selectAll('.node').data(contributions, dataKey)
           .enter().append('g')
             .attr('class', 'node')
             .call(updateColor)
@@ -125,11 +127,11 @@
         else if(sortMetric === 'Title') text = d.Filer_NamL
         else text = sortMetric + ': ' + d.Tran_Amt2*/
         if(text === d.Filer_NamL || text === d.Tran_City) text = 'YTD: ' + money(d.Tran_Amt2)
-        tooltip.select('.main').text(text)
-        tooltip.select('.title').text(d.Filer_NamL)
-        tooltip.select('.name').text(d.Tran_NamF + ' ' + d.Tran_NamL)
+        tooltip.select('.name').text('← ' + d.Tran_NamF + ' ' + d.Tran_NamL)
+        tooltip.select('.title').text('→ ' + d.Filer_NamL)
         tooltip.select('.city').text('City: ' + d.Tran_City)
         tooltip.select('.employer').text('Employer: ' + d.Tran_Emp)
+        tooltip.select('.main').text(text)
         var box = tooltip.select('.desc').node().getBBox()
         box.x -= 10, box.y -= 10, box.width += 20, box.height += 20
         tooltip.select('rect').attr(box)
@@ -210,11 +212,10 @@
       // listen for sort button clicks
       $('.sort-by').on('change', function(){
         var newMetric = $(this).val()
-        if(sortMetric === newMetric) return
-        sortMetric = newMetric
-        if(sortMetric === 'Title') sortByTitle(node)
-        else if(sortMetric === 'oakland') sortByOakland(node)
-        else sortNodesByMetric(sortMetric, node)
+        if(sortMetric !== newMetric) {
+          sortMetric = newMetric;
+          sortNodesByMetric(sortMetric, node)
+        }
       })
       $('.color').on('change', function(){
         var newMetric = $(this).val()
